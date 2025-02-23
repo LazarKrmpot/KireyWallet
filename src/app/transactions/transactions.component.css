@@ -1,0 +1,36 @@
+.transactions-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.add-btn {
+  margin-bottom: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.field label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 10px;
+}
+
+.mt-3 {
+  margin-top: 15px;
+}

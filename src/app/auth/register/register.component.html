@@ -1,0 +1,114 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-300 p-4">
+  <p-card header="Register" class="w-96 shadow-lg rounded-lg">
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onRegister()"
+      class="space-y-4"
+    >
+      <div class="flex flex-col">
+        <label for="fullName" class="font-medium">Full Name</label>
+        <input
+          pInputText
+          id="fullName"
+          formControlName="fullName"
+          class="w-full p-2 border rounded"
+        />
+        @if(fullName.invalid && (fullName.dirty || fullName.touched)) {
+        <small class="block text-red-400">Full name is required</small>
+        } @if(fullName.hasError('pattern')) {
+        <small class="block text-red-400"
+          >Full name must contain only characters and spaces</small
+        >
+        }
+      </div>
+      <div class="flex flex-col">
+        <label for="email" class="font-medium">Email</label>
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          class="w-full p-2 border rounded"
+        />
+        @if(email.invalid && (email.dirty || email.touched)) {
+        <small class="block text-red-400">
+          @if(email.hasError('required')) {
+          <span>Email is required</span>
+          } @else if(email.hasError('emailTaken')) {
+          <span>Email is already in use!</span>
+          } @else if(email.hasError('pattern')) {
+          <span>Email is invalid</span>
+          }
+        </small>
+        }
+      </div>
+      <div class="flex flex-col w-full">
+        <label for="password" class="font-medium">Password</label>
+        <p-password
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          inputId="password"
+          inputStyleClass="w-full p-inputtext border border-gray-300 rounded-md p-2"
+          styleClass="w-full"
+        />
+        @if(password.invalid && (password.dirty || password.touched)) {
+        <small class="block text-red-400">Password is required</small>
+        } @if(password.hasError('minlength')) {
+        <small class="block text-red-400"
+          >Password must be at least 5 characters long</small
+        >
+        } @if(password.hasError('pattern')) {
+        <small class="block text-red-400"
+          >Password must contain at least one uppercase, one lowercase, one
+          number, and one special character</small
+        >
+        }
+      </div>
+      <div class="flex flex-col">
+        <label for="confirmPassword" class="font-medium"
+          >Confirm Password</label
+        >
+        <p-password
+          formControlName="confirmPassword"
+          [feedback]="false"
+          [toggleMask]="true"
+          inputId="confirmPassword"
+          inputStyleClass="w-full p-inputtext border border-gray-300 rounded-md p-2"
+          styleClass="w-full"
+        />
+        @if(confirmPassword.invalid && (confirmPassword.dirty ||
+        confirmPassword.touched)) {
+        <small class="block text-red-400">Confirm Password is required</small>
+        } @if(registerForm.hasError('passwordMismatch') && password.valid &&
+        confirmPassword.valid) {
+        <small class="block text-red-400">Password mismatch</small>
+        }
+      </div>
+      <div class="flex flex-col">
+        <label for="accountAmount" class="font-medium">Amount</label>
+        <p-inputnumber
+          formControlName="accountAmount"
+          [min]="0"
+          mode="currency"
+          locale="en-US"
+          currency="USD"
+          class="w-full"
+        />
+        @if(accountAmount.invalid && (accountAmount.dirty ||
+        accountAmount.touched)) {
+        <small class="block text-red-400">Amount is required</small>
+        }
+      </div>
+      <p-button
+        type="submit"
+        label="Register"
+        [disabled]="registerForm.invalid"
+        [raised]="true"
+      ></p-button>
+      <div class="text-center mt-2">
+        Already a member?
+        <a routerLink="/login" class="text-blue-600 hover:underline">Login</a>
+      </div>
+    </form>
+  </p-card>
+</div>

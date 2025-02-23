@@ -1,0 +1,98 @@
+<p-dialog
+  [header]="transaction ? 'Edit Transaction' : 'Add Transaction'"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  [closable]="false"
+  [focusOnShow]="false"
+>
+  <form [formGroup]="transactionForm" (ngSubmit)="onSave()">
+    <div class="mb-1">
+      <label for="item">Purchased Item</label>
+      <input
+        id="item"
+        formControlName="item"
+        type="text"
+        pInputText
+        placeholder="Enter item name"
+        class="w-full"
+      />
+      @if((transactionForm.controls['item'].dirty ||
+      transactionForm.controls['item'].touched) &&
+      transactionForm.controls['item'].invalid) {
+      <small class="text-red-400"> Item name is required! </small>
+      }
+    </div>
+
+    <div class="mb-1">
+      <label for="category">Category</label>
+      <p-select
+        id="category"
+        formControlName="category"
+        [options]="categoryOptions"
+        placeholder="Select a category"
+        [style]="{ width: '100%' }"
+      ></p-select>
+      @if((transactionForm.controls['category'].dirty ||
+      transactionForm.controls['category'].touched) &&
+      transactionForm.controls['category'].invalid){
+      <small class="text-red-400"> Category is required! </small>
+      }
+    </div>
+
+    <div class="mb-1">
+      <label for="date">Date</label>
+      <p-datepicker
+        id="date"
+        appendTo="body"
+        formControlName="date"
+        [showTime]="true"
+        [showIcon]="true"
+        [style]="{ width: '100%' }"
+      ></p-datepicker>
+      @if( (transactionForm.controls['date'].dirty ||
+      transactionForm.controls['date'].touched) &&
+      transactionForm.controls['date'].invalid ){
+      <small class="text-red-400"> Date is required! </small>
+      }
+    </div>
+
+    <div class="mb-4">
+      <label for="amountSpent" class="block text-900 font-medium mb-2">
+        Amount Spent
+      </label>
+      <p-inputnumber
+        [min]="0"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        inputStyleClass="w-full"
+        class="w-full"
+        formControlName="amountSpent"
+      />
+      <div>
+        @if(amountExceedsBalance()){
+        <small class="text-red-400"> Amount exceeds available balance! </small>
+        } @if( (transactionForm.controls['amountSpent'].dirty ||
+        transactionForm.controls['amountSpent'].touched) &&
+        transactionForm.controls['amountSpent'].value <= 0){
+        <small class="text-red-400"> Amount must be greater than 0! </small>
+        }
+      </div>
+    </div>
+
+    <div>
+      <p-button
+        type="submit"
+        label="Save"
+        [disabled]="isSaveDisabled()"
+      ></p-button>
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="onCancel()"
+        class="ml-2"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>

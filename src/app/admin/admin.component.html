@@ -1,0 +1,174 @@
+<div class="min-h-screen surface-ground">
+  <div
+    class="py-3 bg-gray-100 shadow-md px-5 flex justify-between items-center shadow-2"
+  >
+    <div class="flex items-center">
+      <h1 class="m-0 text-xl font-medium">User Management System</h1>
+    </div>
+    <p-button label="Logout" (click)="logout()" severity="danger"> </p-button>
+  </div>
+
+  <div class="pl-5 pr-5 mt-5">
+    <div class="card mb-4">
+      <p-table
+        [value]="users"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
+        styleClass="p-datatable-sm p-datatable-gridlines shadow-2 border-round-xl"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="text-sm">Name</th>
+            <th class="text-sm">Email</th>
+            <th class="text-sm">Funds</th>
+            <th style="width: 150px" class="text-sm">Actions</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>
+              <div class="flex items-center">
+                <i class="pi pi-user mr-2 text-primary"></i>
+                <span>{{ user.fullName }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center">
+                <i class="pi pi-envelope mr-2 text-primary-400"></i>
+                <span>{{ user.email }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="text-green-600 font-medium">
+                {{ user.accountAmount | currency }}
+              </span>
+            </td>
+            <td>
+              <div class="flex gap-2">
+                <p-button
+                  label="view"
+                  (click)="openTransactionsDialog(user.id)"
+                  severity="info"
+                >
+                </p-button>
+                <p-button
+                  label="delete"
+                  (click)="confirmDeleteUser(user.id)"
+                  severity="danger"
+                >
+                </p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3" class="text-center p-4">
+              <div class="flex flex-col items-center">
+                <span class="text-700">No users found</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <p-dialog
+    header="User Transactions"
+    [(visible)]="displayTransactionsDialog"
+    [modal]="true"
+    [style]="{ width: '80vw' }"
+    [maximizable]="true"
+    styleClass="p-fluid"
+  >
+    <app-transactions-table
+      [transactions]="selectedUserTransactions"
+      (editTransaction)="openEditTransactionDialog($event)"
+      (deleteTransaction)="confirmDeleteTransaction($event)"
+    />
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button
+          label="Close"
+          severity="info"
+          (click)="closeTransactionsDialog()"
+          [outlined]="true"
+        >
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <app-transactions-dialog
+    [transaction]="selectedTransaction"
+    [categoryOptions]="categories"
+    (save)="saveTransactionChanges($event)"
+    [visible]="displayEditTransactionDialog"
+    (cancel)="closeEditTransactionDialog()"
+    [userId]="selectedUserId"
+  />
+
+  <p-dialog
+    header="Confirm Deletion"
+    [(visible)]="displayConfirmDeleteUserDialog"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+  >
+    <div class="flex items-center justify-center p-4">
+      <i class="mr-3 text-4xl text-orange-500"></i>
+      <span class="text-900"
+        >Are you sure you want to delete this user? This action cannot be
+        undone.</span
+      >
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button
+          label="No"
+          (click)="displayConfirmDeleteUserDialog = false"
+          [outlined]="true"
+        >
+        </p-button>
+        <p-button label="Yes" (click)="deleteUser()" severity="danger">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog
+    header="Confirm Deletion"
+    [(visible)]="displayConfirmDeleteTransactionDialog"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+  >
+    <div class="flex items-center justify-center p-4">
+      <i class="mr-3 text-4xl text-orange-500"></i>
+      <span class="text-900"
+        >Are you sure you want to delete this transaction? This action cannot be
+        undone.</span
+      >
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button
+          label="No"
+          (click)="displayConfirmDeleteTransactionDialog = false"
+          [outlined]="true"
+        >
+        </p-button>
+        <p-button label="Yes" (click)="deleteTransaction()" severity="danger">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmPopup />
+</div>

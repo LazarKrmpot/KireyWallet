@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "fullName": "Admin User",
+      "email": "admin@kireygroup.com",
+      "password": "Admin@kireygroup2025",
+      "accountAmount": 5,
+      "role": "admin"
+    }
+  ],
+  "transactions": []
+}

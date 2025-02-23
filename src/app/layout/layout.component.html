@@ -1,0 +1,20 @@
+<header class="bg-gray-100 shadow-md py-3">
+  <div class="header-container flex justify-between items-center px-6">
+    <div class="logo text-xl font-semibold">
+      <p>Logo</p>
+    </div>
+    <nav class="nav-links flex items-center gap-6">
+      <a routerLink="" class="nav-link text-lg font-medium hover:underline"
+        >My Account</a
+      >
+      <a
+        routerLink="transactions"
+        class="nav-link text-lg font-medium hover:underline"
+        >Transactions</a
+      >
+      <p-button label="Logout" (click)="logout()" severity="danger"></p-button>
+    </nav>
+  </div>
+</header>
+
+<router-outlet></router-outlet>

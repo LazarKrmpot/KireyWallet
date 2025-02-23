@@ -1,0 +1,86 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-300">
+  <p-card header="Login" [style]="{ width: '400px' }" class="shadow-md">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <!-- Email Field -->
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">
+          Email
+        </label>
+        @if(loginForm.get('email')){
+
+        <input
+          type="email"
+          pInputText
+          formControlName="email"
+          [ngClass]="{
+            'border-red-500':
+              email?.invalid && (email?.dirty || email?.touched),
+            'border-gray-300': !(
+              email?.invalid &&
+              (email?.dirty || email?.touched)
+            )
+          }"
+          class="w-full p-inputtext border rounded-md p-2"
+          id="email"
+          name="email"
+          required
+        />
+        @if(email?.invalid && (email?.dirty || email?.touched)){
+        <small class="block text-red-400">
+          @if(email?.hasError('required')){ Email is required }
+          @if(email?.hasError('pattern') || email?.hasError('email')){
+          <span> Email is invalid </span>
+          }
+        </small>
+        } }
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">
+          Password
+        </label>
+        @if(loginForm.get('password')){
+        <p-password
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          inputId="password"
+          [ngClass]="{
+            'border-red-500':
+              password?.invalid && (password?.dirty || password?.touched),
+            'border-gray-300': !(
+              password?.invalid &&
+              (password?.dirty || password?.touched)
+            )
+          }"
+          inputStyleClass="w-full p-inputtext border rounded-md p-2"
+          styleClass="w-full"
+          required
+        ></p-password>
+        @if(password?.invalid && (password?.dirty || password?.touched)){
+        <small class="block text-red-400">
+          @if(password?.hasError('required')){ Password is required }
+          @if(password?.hasError('pattern')){
+          <span> Password must contain at least one letter </span>
+          }
+        </small>
+        } }
+      </div>
+
+      <p-button
+        label="Sign In"
+        [raised]="true"
+        class="w-full text-white font-medium rounded-md"
+        [disabled]="loginForm.invalid"
+        type="submit"
+      ></p-button>
+
+      <div class="mt-2 text-center text-sm text-gray-600">
+        Already a member?
+        <a routerLink="/auth/register" class="text-blue-500 hover:underline">
+          Register
+        </a>
+      </div>
+    </form>
+  </p-card>
+</div>
